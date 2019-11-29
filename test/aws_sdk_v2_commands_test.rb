@@ -50,6 +50,17 @@ class AwsSdkV2CommandsTest < Test::Unit::TestCase
     end
   end
 
+  def test_list_object
+    '0'.upto('3').each do |i|
+      object = @bucket.object("test#{i}")
+      object.put(body: 'test')
+    end
+
+    list = @s3.list_objects_v2(bucket: 'v2_bucket', max_keys: 2)
+
+    assert_equal true, list.is_truncated
+  end
+
   # TODO - get this test working
   #
   #def test_copy_object
